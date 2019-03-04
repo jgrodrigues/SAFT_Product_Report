@@ -6,14 +6,14 @@ This program parses a SAFT-PT file and outputs the total quantity and value with
 
 
 
-####Compiling:
+#### Compiling:
 `javac Main.java`
 
-####Usage Example:
+#### Usage Example:
 `java Main ../SAFT.xml`
 
 
-##Example Output:
+#### Example Output:
 ```
 Produto                       |Quantidade           |Valor   |Preco Medio |
  --------------------------------------------------------------------------
