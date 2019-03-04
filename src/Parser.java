@@ -28,6 +28,14 @@ public class Parser {
         products = new TreeMap<>();
     }
 
+    /**
+     * Gets all nodes that are a line of an invoice
+     * @return the list of the nodes
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws XPathExpressionException
+     */
     private NodeList getNodeList() throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -36,6 +44,12 @@ public class Parser {
         return (NodeList) xPath.compile(query).evaluate(xmlDocument, XPathConstants.NODESET);
     }
 
+    /**
+     * Gets the product name
+     * @param nodeList
+     * @param i
+     * @return
+     */
     private String getProductName(NodeList nodeList,int i) {
         String name;
         for (int j = 0;;j++) {
@@ -45,6 +59,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Gets the product Quantity sold
+     * @param nodeList
+     * @param i
+     * @return
+     */
     private double getProductQtt(NodeList nodeList, int i) {
         double qtt;
         for (int j = 0;;j++) {
@@ -54,6 +74,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Gets the product unit price
+     * @param nodeList
+     * @param i
+     * @return
+     */
     private double getProductUnitPrice(NodeList nodeList, int i) {
         double unitPrice;
         for (int j = 0;;j++) {
@@ -63,6 +89,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Gets the product tax value
+     * @param nodeList
+     * @param i
+     * @return
+     */
     private float getProductTaxPercentage(NodeList nodeList, int i) {
         float tax;
         for (int j = 0; ; j++) {
@@ -76,6 +108,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Reads the SAFT-PT file and stores the data
+     * @param nodeList
+     */
     private void readNodeList(NodeList nodeList) {
         for (int i = 0; i < nodeList.getLength(); i++) {
 
@@ -96,7 +132,15 @@ public class Parser {
         }
     }
 
-    public Map<String,Product> getList() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    /**
+     * Gets the result after parsing and summing all products sold on the SAFT-PT file
+     * @return the results per product
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws XPathExpressionException
+     */
+    public Map<String,Product> getProducts() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
         List<String> list = new ArrayList<>();
         NodeList nodeList = getNodeList();
         readNodeList(nodeList);

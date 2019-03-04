@@ -17,10 +17,9 @@ public class Main {
             try {
                 FileInputStream fileIS = new FileInputStream(args[0]);
                 Parser p = new Parser(fileIS);
-                Map<String, Product> prods = p.getList();
+                Map<String, Product> prods = p.getProducts();
 
-                getResult(prods);
-
+                printResults(prods);
 
             } catch (FileNotFoundException e) {
                 System.err.println("Wrong File.");
@@ -32,9 +31,12 @@ public class Main {
         }
     }
 
-    public static void getResult(Map<String, Product> prods) {
+    /**
+     * Prints the header and content
+     * @param prods the products
+     */
+    private static void printResults(Map<String,Product> prods) {
         Iterator<String> it = prods.keySet().iterator();
-
         int maxNameLength = 0;
         int maxLengthQtt = 0;
         int maxValueLength = 0;
@@ -69,13 +71,27 @@ public class Main {
 
         }
 
+        printHeaderElement(HEADER_NAME,maxNameLength+spacingOutput);
+        printHeaderElement(HEADER_QTT,maxLengthQtt+spacingOutput);
+        printHeaderElement(HEADER_VALUE,maxValueLength+spacingOutput);
+        printHeaderElement(MEDIUM_PRICE,maxMediumPriceLength+spacingOutput);
 
-        String nextLine = printHeader(HEADER_NAME,maxNameLength+spacingOutput);
-        nextLine = nextLine.concat(printHeader(HEADER_QTT,maxLengthQtt+spacingOutput));
-        nextLine = nextLine.concat(printHeader(HEADER_VALUE,maxValueLength+spacingOutput));
-        nextLine = nextLine.concat(printHeader(MEDIUM_PRICE,maxMediumPriceLength+spacingOutput));
         System.out.println();
-        System.out.println(nextLine);
+        System.out.println(getRepeatedString("-",maxNameLength+maxLengthQtt+maxValueLength+maxMediumPriceLength+spacingOutput*4));
+
+        printContent(prods,maxNameLength,maxLengthQtt,maxValueLength,maxMediumPriceLength);
+    }
+
+    /**
+     * Prints the main content
+     * @param prods the products
+     * @param maxNameLength
+     * @param maxLengthQtt
+     * @param maxValueLength
+     * @param maxMediumPriceLength
+     */
+    private static void printContent(Map<String, Product> prods, int maxNameLength, int maxLengthQtt, int maxValueLength, int maxMediumPriceLength) {
+        Iterator<String> it = prods.keySet().iterator();
 
         it = prods.keySet().iterator();
         int spacing = 0;
@@ -104,19 +120,34 @@ public class Main {
         }
     }
 
-    private static String printHeader(String str, int maxLength) {
+    /**
+     * Prints a part of the Header
+     * @param str the String to print
+     * @param maxLength the maximum length available to the header part space
+     */
+    private static void printHeaderElement(String str, int maxLength) {
         System.out.printf("%s", str);
         addSpacing(str.length(),maxLength-1);
         System.out.printf("|");
-        return getRepeatedString("-",maxLength);
     }
 
+    /**
+     * Adds spacing in order to align the output
+     * @param lengthLastString length of the last String
+     * @param totalLengthToUse total length available to write
+     */
     private static void addSpacing(int lengthLastString, int totalLengthToUse) {
         int spacing = totalLengthToUse-lengthLastString;
         String spacer = getRepeatedString(" ", spacing);
         System.out.printf("%s",spacer);
     }
 
+    /**
+     * Gets String str repeated n times
+     * @param str the String
+     * @param n the number of times to repeat
+     * @return a string repeated n times
+     */
     private static String getRepeatedString(String str, int n) {
         String newString = "".concat(str);
         for(int i = 1;i<n;i++) {
